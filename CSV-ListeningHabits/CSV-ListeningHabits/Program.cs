@@ -16,7 +16,7 @@ namespace CSV_ListeningHabits
             // initalize dataset into list
             InitList();
             // keep console open
-            MostPopularArtistByYear("2014");
+            
          
             Console.ReadLine();
         }
@@ -53,6 +53,7 @@ namespace CSV_ListeningHabits
         /// <returns>total number of plays</returns>
         public static int TotalPlaysByArtistName(string artistName)
         {
+           // musicDataList.Count(x => x.Artist.ToLower() == artistName);
             return musicDataList.Where(x => x.Artist.ToLower() == artistName.ToLower()).Count();
         }
         /// <summary>
@@ -63,7 +64,7 @@ namespace CSV_ListeningHabits
         /// <returns>total plays in year</returns>
         public static int TotalPlaysByArtistNameInYear(string artistName, string year)
         {
-
+           
             return musicDataList.Where(x => x.Artist.ToLower() == artistName.ToLower()).Where(y => y.Time.ToString().Contains(year)).Count();
         }
         /// <summary>
@@ -72,6 +73,8 @@ namespace CSV_ListeningHabits
         /// <returns>number of unique artists</returns>
         public static int CountUniqueArtists()
         {
+
+            //musicDataList.Select(x => x.Artist).Distinct().Count();
             return musicDataList.GroupBy(x => x.Artist).Count();
         }
         /// <summary>
@@ -81,8 +84,8 @@ namespace CSV_ListeningHabits
         /// <returns>unique artists in year</returns>
         public static int CountUniqueArtists(string year)
         {
-
-
+            //musicDataList.Where(y => y.Time.Year.ToString()== year).Select(x => x.Artist).Distinct().Count();
+            
             return musicDataList.Where(y => y.Time.ToString().Contains(year)).GroupBy(x => x.Artist).Count();
         }
         /// <summary>
@@ -93,8 +96,8 @@ namespace CSV_ListeningHabits
         /// <returns>list of song titles</returns>
         public static List<string> TrackListByArtist(string artistName)
         {
-            //List<string> tracksbyArtist = musicDataList.Where(x => x.Artist.Contains(artistName)).OrderBy(y => y.Title).Cast<Object>.ToList();
-            return musicDataList.Where(y => y.Artist.Contains(artistName)).Select(x => x.Title).ToList();
+            //musicDataList.Where(x => x.Artist.ToLower() == artistName.ToLower()).Select(y => y.Title).Distinct().ToList(); 
+            return musicDataList.Where(y => y.Artist.Contains(artistName.ToLower())).Select(x => x.Title).ToList();
             
         }
         /// <summary>
@@ -104,6 +107,7 @@ namespace CSV_ListeningHabits
         /// <returns>DateTime of first play</returns>
         public static DateTime FirstPlayByArtist(string artistName)
         {
+            //musicDataList.Where(x => x.Artist.ToLower() == artistName.ToLower()).OrderBy(y => y.Time).First().Time;
             return musicDataList.Where(x => x.Artist.ToLower().Contains(artistName.ToLower())).Select(y => y.Time).First();
             
         }
@@ -117,7 +121,7 @@ namespace CSV_ListeningHabits
 
 
         {
- 
+            //return musicDataList.Where(x => x.Time.Year.ToString() == year).GroupBy(y => y.Artist).OrderByDescending(z => z.Count()).First().First().Artist;
             return musicDataList.Where(x => x.Time.ToString().Contains(year)).GroupBy(y => y.Artist).OrderByDescending(z => z.Count()).Select(t => t.Key).First();
                         
         }
@@ -138,7 +142,6 @@ namespace CSV_ListeningHabits
             // Get the time in milliseconds and convert to C# DateTime
             DateTime posixTime = DateTime.SpecifyKind(new DateTime(1970, 1, 1), DateTimeKind.Utc);
             this.Time = posixTime.AddMilliseconds(long.Parse(playData[0]));
-
             // need to populate the rest of the properties
             this.Artist = playData[1];
             this.Title = playData[2];
